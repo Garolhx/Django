@@ -1,3 +1,4 @@
+import ast
 import os
 
 from django.http import HttpResponse, JsonResponse, HttpResponseNotAllowed
@@ -25,7 +26,7 @@ def run_job(request):
         else:
             print(data)
             result = os.popen(data['command'])
-            out = result.read()
+            out = ast.literal_eval(result.read())
             print(out)
             content = {'msg': 'SUCCESS', 'context': out}
             # 返回自定义请求内容content,200状态码
