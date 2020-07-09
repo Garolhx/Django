@@ -3,7 +3,7 @@
   <component name="WebServers">
     <option name="servers">
       <webServer id="b105ac49-4198-43f2-ae71-0d099bcd9bd4" name="django">
-        <fileTransfer rootFolder="/mycephfs/django" accessType="SFTP" host="10.0.4.90" port="22" sshConfigId="6699a43c-5114-46f7-8dc4-656e918b129b" sshConfig="ceph11@10.0.4.90:22 password">
+        <fileTransfer rootFolder="/mycephfs/django" accessType="SFTP" sshConfigId="6699a43c-5114-46f7-8dc4-656e918b129b" sshConfig="ceph11@10.0.4.90:22 password">
           <advancedOptions>
             <advancedOptions dataProtectionLevel="Private" passiveMode="true" shareSSLContext="true" />
           </advancedOptions>
