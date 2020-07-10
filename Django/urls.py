@@ -18,7 +18,7 @@ from django.contrib import admin
 from django.urls import path
 
 from command import views as command_views
-from cephfs import views as cephfs_views
+from filesystem import views as cephfs_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
