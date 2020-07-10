@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<label for="text">ttt</label><textarea id="text"></textarea>
+<button id="button" onclick="click">按钮</button>
+
+<script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
+<script type="text/javascript">
+    $("#button").click(function () {
+        $.ajax({
+            url: '/runJob/',
+            type: 'POST',
+            dataType: 'JSON',
+            contentType: 'application/json',
+            data: JSON.stringify({
+                command: "Net share",
+                date: "2020.07.03"
+            }),
+            success: function(data){
+                console.log(data);
+                $("#text").append(data)
+            }
+        })
+    })
+</script>
+
+</body>
+</html>

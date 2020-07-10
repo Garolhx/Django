@@ -8,9 +8,13 @@ from django.http import HttpResponse, JsonResponse, HttpResponseNotAllowed
 #视图
 #视图处理函数
 # Create your views here.
+from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework import status
 from rest_framework.parsers import JSONParser
+
+def index(request):
+    return render(request, 'index.html')
 
 @csrf_exempt
 def run_job(request):
@@ -22,6 +26,7 @@ def run_job(request):
     if request.method == 'POST':
         try:
             # 解析请求的json格式入参
+
             data = JSONParser().parse(request)
         except Exception as why:
             print(why.args)
@@ -31,10 +36,10 @@ def run_job(request):
             # result = os.popen(data['command'])
             # out = result.readlines()
 
-            p = subprocess.Popen(data['command'], shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+            p = subprocess.Popen(data['command'], shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, encoding='gbk')
             out, error = p.communicate()
-
-            content = {'msg': 'SUCCESS', 'context': out.decode('gbk')}
+            print(out)
+            content = {'msg': 'SUCCESS', 'context': out}
             # 返回自定义请求内容content,200状态码
             return JsonResponse(data=content, status=status.HTTP_200_OK)
     # 如果不是post 请求返回不支持的请求方法

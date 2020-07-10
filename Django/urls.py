@@ -24,5 +24,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     # url(r'^', views.index)
     url(r'^runJob/$',command_views.run_job),
+    url(r'^index/$', command_views.index),
     url(r'^api/$', cephfs_views.ceph),
 ]
