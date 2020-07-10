@@ -31,7 +31,7 @@ def run_job(request):
             # result = os.popen(data['command'])
             # out = result.readlines()
 
-            p = subprocess.Popen(data, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+            p = subprocess.Popen(data['command'], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
             out = p.stdout.readlines()
 
             print(out)
