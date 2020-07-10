@@ -31,11 +31,10 @@ def run_job(request):
             # result = os.popen(data['command'])
             # out = result.readlines()
 
-            p = subprocess.Popen(data['command'], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-            out = p.stdout.readlines()
+            p = subprocess.Popen(data['command'], shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+            out, error = p.communicate()
 
-            print(out)
-            content = {'msg': 'SUCCESS', 'context': out}
+            content = {'msg': 'SUCCESS', 'context': out.decode('gbk')}
             # 返回自定义请求内容content,200状态码
             return JsonResponse(data=content, status=status.HTTP_200_OK)
     # 如果不是post 请求返回不支持的请求方法
