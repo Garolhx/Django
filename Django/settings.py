@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'command',  #注册应用
+    'cephfs',
     'rest_framework'
 ]
 

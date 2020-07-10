@@ -1,5 +1,7 @@
 import ast
+import json
 import os
+import subprocess
 
 from django.http import HttpResponse, JsonResponse, HttpResponseNotAllowed
 
@@ -25,8 +27,13 @@ def run_job(request):
             print(why.args)
         else:
             print(data)
-            result = os.popen(data['command'])
-            out = ast.literal_eval(result.read())
+
+            # result = os.popen(data['command'])
+            # out = result.readlines()
+
+            p = subprocess.Popen(data, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+            out = p.stdout.readlines()
+
             print(out)
             content = {'msg': 'SUCCESS', 'context': out}
             # 返回自定义请求内容content,200状态码

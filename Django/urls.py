@@ -17,10 +17,12 @@ from django.conf.urls import url
 from django.contrib import admin
 from django.urls import path
 
-from command import views
+from command import views as command_views
+from cephfs import views as cephfs_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     # url(r'^', views.index)
-    url(r'^runJob/$',views.run_job)
+    url(r'^runJob/$',command_views.run_job),
+    url(r'^api/$', cephfs_views.ceph),
 ]
