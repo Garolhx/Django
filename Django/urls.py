@@ -26,4 +26,5 @@ urlpatterns = [
     url(r'^runJob/$',command_views.run_job),
     url(r'^index/$', command_views.index),
     url(r'^api/$', cephfs_views.ceph),
+    url(r'^jr/$', cephfs_views.ceph),
 ]

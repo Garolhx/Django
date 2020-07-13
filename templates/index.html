@@ -23,7 +23,7 @@
             }),
             success: function(data){
                 console.log(data);
-                $("#text").append(data)
+                $("#text").val(data.context)
             }
         })
     })
