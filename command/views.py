@@ -53,9 +53,3 @@ def normal_command(request):
 class NodeInfoViewSet(viewsets.ModelViewSet):
     queryset = NodeInfo.objects.all()
     serializer_class = NodeInfoSerializer
-
-    # def get(self, request, *args, **kwargs):
-    #     nodes = NodeInfo.objects.all()
-    #     ser = NodeInfoSerializer(instance=nodes, many=True)
-    #     ret = json.dumps(ser.data, ensure_ascii=False)
-    #     return HttpResponse(ret)
