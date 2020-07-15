@@ -5,19 +5,32 @@ import subprocess
 
 from django.http import HttpResponse, JsonResponse, HttpResponseNotAllowed
 
-#视图
-#视图处理函数
-# Create your views here.
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
-from rest_framework import status
+from rest_framework import status, viewsets
 from rest_framework.parsers import JSONParser
+from rest_framework.views import APIView
+
+from command.models import NodeInfo
+from command.serializers import NodeInfoSerializer
+
 
 def index(request):
     return render(request, 'index.html')
 
+
+def execute_command(command):
+    print(command)
+
+    p = subprocess.Popen(command['command'], shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, encoding='gbk')
+    out, error = p.communicate()
+    print(out)
+    content = {'msg': 'SUCCESS', 'context': out}
+    return content
+
+
 @csrf_exempt
-def run_job(request):
+def normal_command(request):
     # 判断请求头是否为json
     if request.content_type != 'application/json':
         # 如果不是的话，返回405
@@ -26,21 +39,23 @@ def run_job(request):
     if request.method == 'POST':
         try:
             # 解析请求的json格式入参
-
             data = JSONParser().parse(request)
         except Exception as why:
             print(why.args)
         else:
-            print(data)
-
-            # result = os.popen(data['command'])
-            # out = result.readlines()
-
-            p = subprocess.Popen(data['command'], shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, encoding='gbk')
-            out, error = p.communicate()
-            print(out)
-            content = {'msg': 'SUCCESS', 'context': out}
+            content = execute_command(data)
             # 返回自定义请求内容content,200状态码
             return JsonResponse(data=content, status=status.HTTP_200_OK)
     # 如果不是post 请求返回不支持的请求方法
     return HttpResponseNotAllowed(permitted_methods=['POST'])
+
+
+class NodeInfoViewSet(viewsets.ModelViewSet):
+    queryset = NodeInfo.objects.all()
+    serializer_class = NodeInfoSerializer
+
+    # def get(self, request, *args, **kwargs):
+    #     nodes = NodeInfo.objects.all()
+    #     ser = NodeInfoSerializer(instance=nodes, many=True)
+    #     ret = json.dumps(ser.data, ensure_ascii=False)
+    #     return HttpResponse(ret)

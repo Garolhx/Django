@@ -9,14 +9,134 @@
 
     </head>
     <body>
-        <div id="container" style="min-width:400px;height:400px"></div>
+        <div>
+            <div id="main" style="width:40%;height:400px; float: left"></div>
+            <div id="container" style="width:60%;height:400px; float: left"></div>
+        </div>
+        <div>
+            控制台
+        </div>
 
-        <script src="https://code.highcharts.com.cn/highcharts/highcharts.js"></script>
-        <script src="https://code.highcharts.com.cn/highcharts/modules/exporting.js"></script>
+
         <script src="https://img.hcharts.cn/highcharts-plugins/highcharts-zh_CN.js"></script>
         <script src="https://lib.sinaapp.com/js/jquery/2.0.2/jquery-2.0.2.min.js"></script>
+
+        <script src="static/HighCharts/code/highcharts.js"></script>
+        <script src="static/HighCharts/code/modules/exporting.js"></script>
+        <script src="static/ECharts/dist/echarts.min.js"></script>
+
+
         <script type="text/javascript">
             $(function () {
+                let mychart = echarts.init(document.getElementById('main'));
+                let option = {
+                        title: {
+                            text: '拓扑图'
+                        },
+                        tooltip: {},
+                        animationDurationUpdate: 1500,
+                        animationEasingUpdate: 'quinticInOut',
+                        series: [
+                            {
+                                type: 'graph',
+                                layout: 'none',
+                                symbolSize: 80,
+                                roam: true,
+                                label: {
+                                    show: true
+                                },
+                                edgeSymbol: ['arrow', 'arrow'],
+                                edgeSymbolSize: [10, 10],
+                                edgeLabel: {
+                                    fontSize: 20
+                                },
+                                data: [{
+                                    name: 'Bank1',
+                                    x: 300,
+                                    y: 100
+                                }, {
+                                    name: 'Bank2',
+                                    x: 400,
+                                    y: 100
+                                }, {
+                                    name: 'Bank3',
+                                    x: 500,
+                                    y: 100
+                                }, {
+                                    name: 'Fund1',
+                                    x: 350,
+                                    y: 200
+                                }, {
+                                    name: 'Fund2',
+                                    x: 450,
+                                    y: 200
+                                }, {
+                                    name: 'Asset1',
+                                    x: 300,
+                                    y: 300
+                                }, {
+                                    name: 'Asset2',
+                                    x: 400,
+                                    y: 300
+                                }, {
+                                    name: 'Asset3',
+                                    x: 500,
+                                    y: 300
+                                }, {
+                                    name: 'User1',
+                                    x: 400,
+                                    y: 400
+                                }],
+                                // links: [],
+                                links: [{
+                                    source: 'User1',
+                                    target: 'Asset1'
+                                }, {
+                                    source: 'User1',
+                                    target: 'Asset2'
+                                }, {
+                                    source: 'User1',
+                                    target: 'Asset3'
+                                }, {
+                                    source: 'Asset1',
+                                    target: 'Fund2'
+                                }, {
+                                    source: 'Asset2',
+                                    target: 'Fund1'
+                                }, {
+                                    source: 'Asset3',
+                                    target: 'Fund1'
+                                }, {
+                                    source: 'Asset3',
+                                    target: 'Fund2'
+                                }, {
+                                    source: 'Fund1',
+                                    target: 'Bank1'
+                                }, {
+                                    source: 'Fund1',
+                                    target: 'Bank2'
+                                }, {
+                                    source: 'Fund1',
+                                    target: 'Bank3'
+                                }, {
+                                    source: 'Fund2',
+                                    target: 'Bank2'
+                                }, {
+                                    source: 'Fund2',
+                                    target: 'Bank3'
+                                }],
+                                lineStyle: {
+                                    opacity: 0.9,
+                                    width: 2,
+                                    curveness: 0
+
+                                }
+                            }
+                        ]
+                    };
+                mychart.setOption(option);
+
+
                 let chart = Highcharts.chart('container', {
                     chart: {
                         type: 'spline',
@@ -26,12 +146,13 @@
                                 let series = this.series[0],
                                     chart = this;
                                 activeLastPointToolip(chart);
+                                //按照间隔时间加入新节点
                                 setInterval(function () {
                                     let x = (new Date()).getTime(),
                                         y = Math.random();
                                     series.addPoint([x,y], true, true);
                                     activeLastPointToolip(chart);
-                                }, 1000);
+                                }, 2000);
                             }
                         }
                     },
@@ -44,7 +165,7 @@
                     },
                     yAxis: {
                         title: {
-                            text: null
+                            text: 'price'
                         }
                     },
                     tooltip: {
@@ -55,12 +176,13 @@
                         }
                     },
                     legend: {
-				        enabled: false
+				        enabled: true
                     },
 		            series: [{
 				        name: '模拟随机数据',
 				        data: (function () {
-						    // 生成随机值
+						    // 生成初始化的20个节点随机值
+                            //整个数据列都在这
 						    let data = [],
 								time = (new Date()).getTime(),
 								i;

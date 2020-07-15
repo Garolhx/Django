@@ -6,27 +6,31 @@
 </head>
 <body>
 
-<label for="text">ttt</label><textarea id="text"></textarea>
+<label for="input">input</label><input id="input">
+<label for="text">textarea</label><textarea id="text" rows="20"></textarea>
 <button id="button" onclick="click">按钮</button>
 
 <script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
 <script type="text/javascript">
-    $("#button").click(function () {
-        $.ajax({
-            url: '/runJob/',
-            type: 'POST',
-            dataType: 'JSON',
-            contentType: 'application/json',
-            data: JSON.stringify({
-                command: "Net share",
-                date: "2020.07.03"
-            }),
-            success: function(data){
-                console.log(data);
-                $("#text").val(data.context)
-            }
+    $(function () {
+        $("#button").click(function () {
+            $.ajax({
+                url: '/runJob/',
+                type: 'POST',
+                dataType: 'JSON',
+                contentType: 'application/json',
+                data: JSON.stringify({
+                    command: $("#input").val(),
+                    date: "2020.07.03"
+                }),
+                success: function(data){
+                    console.log(data);
+                    $("#text").val(data.context)
+                }
+            })
         })
     })
+
 </script>
 
 </body>

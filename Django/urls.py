@@ -15,16 +15,23 @@ Including another URLconf
 """
 from django.conf.urls import url
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
+from rest_framework import routers
 
 from command import views as command_views
-from filesystem import views as cephfs_views
+from jr import views as jr_views
+
+
+router = routers.DefaultRouter()
+router.register(r'nodes', command_views.NodeInfoViewSet)
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    # url(r'^', views.index)
-    url(r'^runJob/$',command_views.run_job),
-    url(r'^index/$', command_views.index),
-    url(r'^api/$', cephfs_views.ceph),
-    url(r'^jr/$', cephfs_views.ceph),
+    # path('admin/', admin.site.urls),
+    # # url(r'^', views.index)
+    # url(r'^command/$',command_views.execute_command),
+    # url(r'^index/$', command_views.index),
+    # url(r'^jr/$', jr_views.index),
+
+    path('', include(router.urls)),
+    path('api-auth/', include('rest_framework.urls', namespace='rest_framework'))
 ]
