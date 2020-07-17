@@ -15,7 +15,7 @@ Including another URLconf
 """
 from django.conf.urls import url
 from django.contrib import admin
-from django.urls import path, include
+from django.urls import path, include, re_path
 from rest_framework import routers
 
 from command import views as command_views
@@ -24,6 +24,7 @@ from jr import views as jr_views
 
 router = routers.DefaultRouter()
 router.register(r'nodes', command_views.NodeInfoViewSet)
+router.register(r'client', command_views.ClientInfoViewSet)
 
 urlpatterns = [
     # path('admin/', admin.site.urls),
@@ -32,6 +33,7 @@ urlpatterns = [
     # url(r'^index/$', command_views.index),
     # url(r'^jr/$', jr_views.index),
 
-    path('', include(router.urls)),
-    path('api-auth/', include('rest_framework.urls', namespace='rest_framework'))
+    path('api/', include(router.urls)),
+    path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
+    re_path(r'command',command_views.general_command)
 ]
