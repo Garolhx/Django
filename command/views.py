@@ -52,12 +52,6 @@ def general_command(request):
     return HttpResponseNotAllowed(permitted_methods=['POST'])
 
 
-#查询集群状态
-def query_cluster_status():
-    result = execute_command('ceph -s --format json-pretty')
-    return result
-
-
 #查询磁盘状态
 def query_disk_status():
     result = execute_command('lsblk')
@@ -65,7 +59,7 @@ def query_disk_status():
 
 
 #添加osd节点
-def add_osds(args):
+def add_osd(args):
     result = execute_command('ceph-deploy osd create --data' + ' ' + args['device'] + ' ' + args['new-ceph-nodes'])
     return result
 
@@ -116,12 +110,35 @@ def query_user_key(args):
 
 #目录操作
 def control_dir(args):
-    result = execute_command('find' + ' ' + args['name'] + ' ' + '-type d -name "' + args['name'] + '"')
+    ifdir = execute_command('find' + ' ' + args['path'] + ' ' + '-type d -name "' + args['dir-name'] + '"')
+    if ifdir is None:
+        execute_command('mkdir' + ' ' + args['path'])
+
+    result = execute_command('mount -t ceph' + ' ' + args['ip'] + ':/ ' + ' ' + args['path'] + ' ' +
+                             '-o name=' + args['client-name'] + ',secret=' + args['key'])
+    return result
+
+
+#查询集群状态
+def query_cluster_status():
+    result = execute_command('ceph -s --format json-pretty')
+    return result
+
+
+#查询故障Osd节点
+def query_osd_status():
+    result = execute_command('ceph osd tree --format json-pretty')
+    return result
+
+
+#移除故障osd
+def remove_osd(args):
+    execute_command('ceph osd down' + ' ' + args['osd-id'])
+    result = execute_command('ceph osd out' + ' ' + args['osd-id'])
     return result
 
 
 class ClientInfoViewSet(viewsets.ModelViewSet):
-
     queryset = ClientInfo.objects.all()
     serializer_class = ClientInfoSerializer
 
