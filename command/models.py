@@ -7,6 +7,8 @@ from django.db import models
 class NodeInfo(models.Model):
     id = models.CharField(verbose_name='节点Id', max_length=256, primary_key=True)
     name = models.CharField(verbose_name= '节点名', max_length=256)
+    ip = models.CharField(verbose_name='节点IP', max_length=256)
+    isAdmin = models.BooleanField(verbose_name='是否管理节点')
 
     class Meta:
         db_table = 'node_info'

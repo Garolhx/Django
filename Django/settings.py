@@ -37,7 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'command',  #注册应用
+    'command',
     'jr',
     'rest_framework'
 ]
