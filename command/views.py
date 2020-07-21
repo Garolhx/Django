@@ -77,7 +77,7 @@ def add_mon(args):
 
 #查看Mon仲裁状态
 def query_quorum_status(args):
-    result = execute_command('ssh' + ' ' + args['ceph-node'] + ' ' + 'ceph quorum_status --format json-pretty')
+    result = execute_command('ssh' + ' ' + args['ceph-node'] + ' ' + 'sudo ceph quorum_status --format json-pretty')
     return result
 
 
@@ -89,51 +89,51 @@ def add_mds(args):
 
 #创建osd池
 def build_osd_pool(args):
-    execute_command('ssh' + ' ' + args['ceph-node'] + ' ' + 'ceph osd pool create cephfs_data 128')
-    execute_command('ssh' + ' ' + args['ceph-node'] + ' ' + 'ceph osd pool create cephfs_metadata 128')
-    result = execute_command('ssh' + ' ' + args['ceph-node'] + ' ' + 'ceph fs new' + ' ' + args['cephfs-name'] + ' ' + 'cephfs_metadata cephfs_data')
+    execute_command('ssh' + ' ' + args['ceph-node'] + ' ' + 'sudo ceph osd pool create cephfs_data 128')
+    execute_command('ssh' + ' ' + args['ceph-node'] + ' ' + 'sudo ceph osd pool create cephfs_metadata 128')
+    result = execute_command('ssh' + ' ' + args['ceph-node'] + ' ' + 'sudo ceph fs new' + ' ' + args['cephfs-name'] + ' ' + 'cephfs_metadata cephfs_data')
     return result
 
 
 #创建用户
 def bulid_user(args):
-    result = execute_command('ssh' + ' ' + args['ceph-node'] + ' ' + "ceph auth get-or-create client." + args['client-name'] + ' ' + "mon 'allow r' mds 'allow r,allow rw path=/' osd 'allow rw pool=cephfs_data' -o ceph.client." + args['cephfs-name'] + ".keyring")
+    result = execute_command('ssh' + ' ' + args['ceph-node'] + ' ' + "sudo ceph auth get-or-create client." + args['client-name'] + ' ' + "mon 'allow r' mds 'allow r,allow rw path=/' osd 'allow rw pool=cephfs_data' -o ceph.client." + args['cephfs-name'] + ".keyring")
     return result
 
 
 #获取用户密钥
 def query_user_key(args):
-    result = execute_command('ssh' + ' ' + args['ceph-node'] + ' ' + 'ceph auth get-key client.' + args['client-name'])
+    result = execute_command('ssh' + ' ' + args['ceph-node'] + ' ' + 'sudo ceph auth get-key client.' + args['client-name'])
     return result
 
 
 #目录操作
 def control_dir(args):
-    ifdir = execute_command('ssh' + ' ' + args['ceph-node'] + ' ' + 'find' + ' ' + args['path'] + ' ' + '-type d -name "' + args['dir-name'] + '"')
+    ifdir = execute_command('ssh' + ' ' + args['ceph-node'] + ' ' + 'sudo find' + ' ' + args['path'] + ' ' + '-type d -name "' + args['dir-name'] + '"')
     if ifdir is None:
-        execute_command('ssh' + ' ' + args['ceph-node'] + ' ' + 'mkdir' + ' ' + args['path'])
+        execute_command('ssh' + ' ' + args['ceph-node'] + ' ' + 'sudo mkdir' + ' ' + args['path'])
 
-    result = execute_command('ssh' + ' ' + args['ceph-node'] + ' ' + 'mount -t ceph' + ' ' + args['ip'] + ':/ ' + ' ' + args['path'] + ' ' +
+    result = execute_command('ssh' + ' ' + args['ceph-node'] + ' ' + 'sudo mount -t ceph' + ' ' + args['ip'] + ':/ ' + ' ' + args['path'] + ' ' +
                              '-o name=' + args['client-name'] + ',secret=' + args['key'])
     return result
 
 
 #查询集群状态
 def query_cluster_status(args):
-    result = execute_command('ssh' + ' ' + args['ceph-node'] + ' ' + 'ceph -s --format json-pretty')
+    result = execute_command('ssh' + ' ' + args['ceph-node'] + ' ' + 'sudo ceph -s --format json-pretty')
     return result
 
 
 #查询故障Osd节点
 def query_osd_status(args):
-    result = execute_command('ssh' + ' ' + args['ceph-node'] + ' ' + 'ceph osd tree --format json-pretty')
+    result = execute_command('ssh' + ' ' + args['ceph-node'] + ' ' + 'sudo ceph osd tree --format json-pretty')
     return result
 
 
 #移除故障osd
 def remove_osd(args):
-    execute_command('ssh' + ' ' + args['ceph-node'] + ' ' + 'ceph osd down' + ' ' + args['osd-id'])
-    result = execute_command('ssh' + ' ' + args['ceph-node'] + ' ' + 'ceph osd out' + ' ' + args['osd-id'])
+    execute_command('ssh' + ' ' + args['ceph-node'] + ' ' + 'sudo ceph osd down' + ' ' + args['osd-id'])
+    result = execute_command('ssh' + ' ' + args['ceph-node'] + ' ' + 'sudo ceph osd out' + ' ' + args['osd-id'])
     return result
 
 
