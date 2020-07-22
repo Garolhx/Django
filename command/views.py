@@ -7,8 +7,8 @@ from django.views.decorators.csrf import csrf_exempt
 from rest_framework import status, viewsets
 from rest_framework.parsers import JSONParser
 
-from command.models import NodeInfo, ClientInfo
-from command.serializers import NodeInfoSerializer, ClientInfoSerializer
+# from command.models import NodeInfo, ClientInfo
+# from command.serializers import NodeInfoSerializer, ClientInfoSerializer
 
 
 def index(request):
@@ -137,13 +137,13 @@ def remove_osd(args):
     return result
 
 
-class ClientInfoViewSet(viewsets.ModelViewSet):
-    queryset = ClientInfo.objects.all()
-    serializer_class = ClientInfoSerializer
-
-
-class NodeInfoViewSet(viewsets.ModelViewSet):
-    queryset = NodeInfo.objects.all()
-    serializer_class = NodeInfoSerializer
+# class ClientInfoViewSet(viewsets.ModelViewSet):
+#     queryset = ClientInfo.objects.all()
+#     serializer_class = ClientInfoSerializer
+#
+#
+# class NodeInfoViewSet(viewsets.ModelViewSet):
+#     queryset = NodeInfo.objects.all()
+#     serializer_class = NodeInfoSerializer
 
 

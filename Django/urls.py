@@ -28,7 +28,7 @@ router.register(r'client', command_views.ClientInfoViewSet)
 
 urlpatterns = [
     # path('admin/', admin.site.urls),
-    # # url(r'^', views.index)
+    # url(r'^', views.index)
     # url(r'^command/$',command_views.execute_command),
     # url(r'^index/$', command_views.index),
     # url(r'^jr/$', jr_views.index),
