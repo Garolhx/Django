@@ -23,8 +23,8 @@ from jr import views as jr_views
 
 
 router = routers.DefaultRouter()
-router.register(r'nodes', command_views.NodeInfoViewSet)
-router.register(r'client', command_views.ClientInfoViewSet)
+# router.register(r'nodes', command_views.NodeInfoViewSet)
+# router.register(r'client', command_views.ClientInfoViewSet)
 
 urlpatterns = [
     # path('admin/', admin.site.urls),
