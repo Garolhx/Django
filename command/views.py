@@ -76,7 +76,7 @@ def add_mon(args):
 
 
 #查看Mon仲裁状态
-def query_quorum_status(args):
+def query_arbitration_status(args):
     result = execute_command('ssh' + ' ' + args['ceph-node'] + ' ' + 'sudo ceph quorum_status --format json-pretty')
     return result
 
@@ -121,6 +121,12 @@ def control_dir(args):
 #查询集群状态
 def query_cluster_status(args):
     result = execute_command('ssh' + ' ' + args['ceph-node'] + ' ' + 'sudo ceph -s --format json-pretty')
+    return result
+
+
+#查询monmap状态
+def query_monmap_status(args):
+    result = execute_command('ssh' + ' ' + args['ceph-node'] + ' ' + 'sudo ceph daemon mon.' + args['ceph-node'] + ' ' + 'mon_status --format json-pretty')
     return result
 
 
