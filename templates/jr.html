@@ -43,7 +43,7 @@
                             </form>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-primary">添加</button>
+                            <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="addModel()">添加</button>
                             <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
                         </div>
                     </div>
@@ -61,9 +61,12 @@
 
 
         <script type="text/javascript">
+
+            let mychart = echarts.init(document.getElementById('main'));
+            let option = null
             $(function () {
-                let mychart = echarts.init(document.getElementById('main'));
-                let option = {
+
+                    option = {
                         title: {
                             text: '拓扑图'
                         },
@@ -241,6 +244,22 @@
                     useUTC: false
                 }
             })
+
+            function addModel() {
+                let selectedModel = $("#type").val()
+                let modelName = $("#name").val()
+                let data = option.series[0].data
+                let links = option.series[0].links
+                if (selectedModel === 'user'){
+                    let a = {
+                        name: modelName,
+                        x: 300,
+                        y: 400
+                    }
+                    data.push(a)
+                    mychart.setOption(option);
+                }
+            }
         </script>
     </body>
 </html>
