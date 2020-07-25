@@ -19,8 +19,6 @@ from django.urls import path, include, re_path
 from rest_framework import routers
 
 from command import views as command_views
-from jr import views as jr_views
-
 
 router = routers.DefaultRouter()
 # router.register(r'nodes', command_views.NodeInfoViewSet)
